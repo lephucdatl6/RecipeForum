@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.*;
 
 public class SignupActivity extends AppCompatActivity {
@@ -59,6 +64,7 @@ public class SignupActivity extends AppCompatActivity {
                     boolean insert = db.insertUser(user, pass, dob, ph, em);
                     if (insert) {
                         Toast.makeText(this, "Signup Successful", Toast.LENGTH_SHORT).show();
+                        sendWelcomeEmail(em); // This function to send the email remotely
                         startActivity(new Intent(this, LoginActivity.class));
                     } else {
                         Toast.makeText(this, "Signup Failed", Toast.LENGTH_SHORT).show();
@@ -105,5 +111,33 @@ public class SignupActivity extends AppCompatActivity {
         ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, days);
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         daySpinner.setAdapter(dayAdapter);
+    }
+
+    private void sendWelcomeEmail(String userEmail) {
+        new Thread(() -> {
+            try {
+                URL url = new URL("http://192.168.20.108/sendemail/send_email.php");
+
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setDoOutput(true);
+                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                String postData = "email=" + URLEncoder.encode(userEmail, "UTF-8");
+
+                try (OutputStream os = conn.getOutputStream()) {
+                    os.write(postData.getBytes());
+                    os.flush();
+                }
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                } else {
+                }
+                conn.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 }

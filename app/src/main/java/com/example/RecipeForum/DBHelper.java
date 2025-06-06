@@ -76,8 +76,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return null;
     }
 
-
-
     public boolean checkUsername(String username) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM users WHERE username = ?", new String[]{username});
