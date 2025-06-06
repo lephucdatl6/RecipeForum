@@ -31,4 +31,3 @@ public class ForumActivity extends AppCompatActivity {
         emailText.setText("Email: " + (email != null ? email : "Not Found"));
     }
 }
-

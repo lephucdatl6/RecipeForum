@@ -106,7 +106,4 @@ public class DBHelper extends SQLiteOpenHelper {
         return exists;
     }
 
-
 }
-
-
