@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class ForumActivity extends AppCompatActivity {
 
-    TextView usernameText, dobText;
+    TextView usernameText, dobText, phoneText, emailText;
     DBHelper db;
 
     @Override
@@ -16,12 +16,19 @@ public class ForumActivity extends AppCompatActivity {
 
         usernameText = findViewById(R.id.username_text);
         dobText = findViewById(R.id.dob_text);
+        phoneText = findViewById(R.id.phone_text);
+        emailText = findViewById(R.id.email_text);
         db = new DBHelper(this);
 
         String username = getIntent().getStringExtra("username");
         String dob = db.getDob(username);
+        String phone = db.getPhone(username);
+        String email = db.getEmail(username);
 
         usernameText.setText("Username: " + username);
         dobText.setText("Date of Birth: " + (dob != null ? dob : "Not Found"));
+        phoneText.setText("Phone: " + (phone != null ? phone : "Not Found"));
+        emailText.setText("Email: " + (email != null ? email : "Not Found"));
     }
 }
+
