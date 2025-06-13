@@ -20,10 +20,12 @@
             android:exported="false" />
         <activity
             android:name=".SignupActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.MyApp"/>
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.MyApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
