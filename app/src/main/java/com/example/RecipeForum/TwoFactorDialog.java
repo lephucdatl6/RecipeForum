@@ -2,6 +2,7 @@ package com.example.RecipeForum;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.widget.EditText;
 
@@ -15,6 +16,7 @@ public class TwoFactorDialog {
         EditText input = new EditText(context);
         input.setHint("Enter 4-digit code");
         input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setFilters(new InputFilter[] { new InputFilter.AllCaps() });
 
         new AlertDialog.Builder(context)
                 .setTitle("2FA Verification")
