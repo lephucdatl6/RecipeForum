@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">LoginSystem</string>
+    <string name="app_name">RecipeForum</string>
+    <string name="terms_text">I agree to the <u><font color='#0000FF'>Terms and Conditions</font></u></string>
 </resources>

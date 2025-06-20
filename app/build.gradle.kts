@@ -7,7 +7,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.loginsystem"
+        applicationId = "com.example.RecipeForum"
         minSdk = 24
         targetSdk = 35
         versionCode = 1

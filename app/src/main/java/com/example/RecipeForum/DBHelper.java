@@ -11,6 +11,18 @@ public class DBHelper extends SQLiteOpenHelper {
         super(context, "Userdata.db", null, 1);
     }
 
+//    @Override
+//    public void onCreate(SQLiteDatabase db) {
+//        db.execSQL("CREATE TABLE users (" +
+//                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "username TEXT UNIQUE, " +
+//                "password TEXT, " +
+//                "dob TEXT, " +
+//                "phone TEXT, " +
+//                "email TEXT)" +);
+//
+//    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE users (" +
@@ -19,7 +31,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "password TEXT, " +
                 "dob TEXT, " +
                 "phone TEXT, " +
-                "email TEXT)");
+                "email TEXT, " +
+                "points INTEGER DEFAULT 0)");
     }
 
 

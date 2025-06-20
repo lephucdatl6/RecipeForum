@@ -5,8 +5,11 @@ import static com.example.RecipeForum.EmailSender.sendWelcomeEmail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.InputStream;
 import java.util.*;
 
 public class SignupActivity extends AppCompatActivity {
@@ -15,17 +18,24 @@ public class SignupActivity extends AppCompatActivity {
     EditText username, password, phone, email;
     Button signup, returnLogin;
     DBHelper db;
+    CheckBox termsCheckbox;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+
         // Initialize UI elements
         username = findViewById(R.id.username_input);
         password = findViewById(R.id.password_input);
         phone = findViewById(R.id.phone__input);
         email = findViewById(R.id.email__input);
+        termsCheckbox = findViewById(R.id.terms_checkbox);
+        TextView termsText = findViewById(R.id.terms_text);
+        termsText.setOnClickListener(v -> showTermsDialog());
+
         signup = findViewById(R.id.signup_btn);
         returnLogin = findViewById(R.id.btn_return_login);
 
@@ -49,6 +59,8 @@ public class SignupActivity extends AppCompatActivity {
             if (user.isEmpty() || pass.isEmpty() || ph.isEmpty() || em.isEmpty() ||
                     month.equals("Select") || day.equals("Select") || year.equals("Select")) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+            } else if (!termsCheckbox.isChecked()) {
+                Toast.makeText(this, "You must agree to the terms", Toast.LENGTH_SHORT).show();
             } else {
                 String dob = day + "/" + month + "/" + year;
 
@@ -80,6 +92,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
+    // Populates the Year, Month, and Day dropdowns for date of birth selection
     private void setupSpinners() {
         // Year Spinner
         List<String> years = new ArrayList<>();
@@ -99,7 +112,6 @@ public class SignupActivity extends AppCompatActivity {
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
-
         // Day Spinner
         List<String> days = new ArrayList<>();
         days.add("Select");
@@ -109,5 +121,27 @@ public class SignupActivity extends AppCompatActivity {
         ArrayAdapter<String> dayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, days);
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         daySpinner.setAdapter(dayAdapter);
+    }
+
+
+    // Displays an AlertDialog showing the Terms and Conditions loaded from a raw text file
+    private void showTermsDialog() {
+        String termsText = loadTermsFromRaw();
+        new AlertDialog.Builder(this)
+                .setTitle("Terms and Conditions")
+                .setMessage(termsText)
+                .setPositiveButton("OK", null)
+                .show();
+    }
+
+    // Loads the Terms and Conditions text from the res/raw/terms.txt file
+    private String loadTermsFromRaw() {
+        try (InputStream is = getResources().openRawResource(R.raw.terms);
+             Scanner scanner = new Scanner(is).useDelimiter("\\A")) {
+            return scanner.hasNext() ? scanner.next() : "";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unable to load terms.";
+        }
     }
 }
